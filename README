@@ -1,13 +1,7 @@
-Written by Catie Jo Pidel for CSci 5143
-February 1st, 2016
+Written by Catie Jo Pidel
 --------------------------------------------------------------------------------
-
-My board consists of a blue and a red LED hooked up to a Pololu A-Star 32u4
-Robotic controller. The blue LED blinks at a constant rate of .5Hz, while the
-red LED blinks at varying frequencies (cycled by pressing button C). It defaults
-to 4Hz.
 
 Directions:
 * Load code onto board, then press RESET once
-* Press button A to interrupt the blue LED with the red LED
-* Press button C to change the blink frequency of the red LED
+* Press Button
+* Be amazed (if you're easily amazed)
