@@ -1,4 +1,5 @@
-#define DURATION 4
+#define DURATION 2
+#define F_CPU 16000000
 
 #include <avr/io.h>
 #include <util/delay.h>
@@ -68,7 +69,7 @@ int main()
       }
       buttonCount3--;
     }
-    _delay_ms(1000);
+    _delay_ms(100);
   }
 }
 
@@ -100,6 +101,9 @@ ISR(PCINT0_vect) {
 
   // if (debounce && (changedbits & (1 << PINB3))) {
   if (changedbits & (1 << PINB3)) {
+    if (buttonCount0 == 0) {
+      PORTB ^= (1 << PORTB7);  // Toggle LED.
+    }
     buttonCount3 = DURATION;
   }
 
