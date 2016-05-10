@@ -22,26 +22,28 @@ int led18 = 34;
 int led19 = 33;
 int led20 = 32;
 
-CapacitiveSensor cs_20_25 = CapacitiveSensor(20,24);
-CapacitiveSensor cs_20_24 = CapacitiveSensor(20,24);
-CapacitiveSensor cs_20_23 = CapacitiveSensor(20,23);
-CapacitiveSensor cs_20_22 = CapacitiveSensor(20,22);
-CapacitiveSensor cs_20_21 = CapacitiveSensor(20,22);
-CapacitiveSensor cs_20_19 = CapacitiveSensor(20,19);
-CapacitiveSensor cs_20_18 = CapacitiveSensor(20,18);
-CapacitiveSensor cs_20_17 = CapacitiveSensor(20,17);
-CapacitiveSensor cs_20_16 = CapacitiveSensor(20,16);
-CapacitiveSensor cs_20_15 = CapacitiveSensor(20,15);
-CapacitiveSensor cs_20_14 = CapacitiveSensor(20,14);
-CapacitiveSensor cs_20_13 = CapacitiveSensor(20,13);
-CapacitiveSensor cs_20_12 = CapacitiveSensor(20,12);
-CapacitiveSensor cs_20_11 = CapacitiveSensor(20,11);
-CapacitiveSensor cs_20_10 = CapacitiveSensor(20,10);
-CapacitiveSensor cs_20_09 = CapacitiveSensor(20,9);
-CapacitiveSensor cs_20_08 = CapacitiveSensor(20,8);
-CapacitiveSensor cs_20_07 = CapacitiveSensor(20,7);
-CapacitiveSensor cs_20_06 = CapacitiveSensor(20,6);
-CapacitiveSensor cs_20_05 = CapacitiveSensor(20,5);
+//CapacitiveSensor cs_20_Y = CapacitiveSensor(20,31);
+//CapacitiveSensor cs_20_26 = CapacitiveSensor(20,26);
+CapacitiveSensor cs20 = CapacitiveSensor(20,25);
+CapacitiveSensor cs19 = CapacitiveSensor(20,24);
+CapacitiveSensor cs18 = CapacitiveSensor(20,23);
+CapacitiveSensor cs17 = CapacitiveSensor(20,22);
+CapacitiveSensor cs16 = CapacitiveSensor(20,22);
+CapacitiveSensor cs15 = CapacitiveSensor(20,19);
+CapacitiveSensor cs14 = CapacitiveSensor(20,18);
+CapacitiveSensor cs13 = CapacitiveSensor(20,17);
+CapacitiveSensor cs12 = CapacitiveSensor(20,16);
+CapacitiveSensor cs11 = CapacitiveSensor(20,15);
+CapacitiveSensor cs10 = CapacitiveSensor(20,14);
+CapacitiveSensor cs9 = CapacitiveSensor(20,13);
+CapacitiveSensor cs8 = CapacitiveSensor(20,12);
+CapacitiveSensor cs7 = CapacitiveSensor(20,11);
+CapacitiveSensor cs6 = CapacitiveSensor(20,10);
+CapacitiveSensor cs5 = CapacitiveSensor(20,9);
+CapacitiveSensor cs4 = CapacitiveSensor(20,8);
+CapacitiveSensor cs3 = CapacitiveSensor(20,7);
+CapacitiveSensor cs2 = CapacitiveSensor(20,6);
+CapacitiveSensor cs1 = CapacitiveSensor(20,5);
 
 SoftwareSerial mySerial(2, 3); // RX, TX
 byte resetMIDI = 4; //Tied to VS1053 Reset line
@@ -67,6 +69,8 @@ long cap18 = 0;
 long cap19 = 0;
 long cap20 = 0;
 
+int counts[21];
+
 int count1 = 0;
 int count2 = 0;
 int count3 = 0;
@@ -89,11 +93,12 @@ int count19 = 0;
 int count20 = 0;
 
 int beat = 100;
-int granularity = 5;
-int duration = 20;
-long threshold = 500;
+int granularity = 10;
+int duration = 10;
+long threshold = 400;
 
 void setup() {
+  //LEDs
   pinMode(led1, OUTPUT);
   pinMode(led2, OUTPUT);
   pinMode(led3, OUTPUT);
@@ -114,28 +119,29 @@ void setup() {
   pinMode(led18, OUTPUT);
   pinMode(led19, OUTPUT);
   pinMode(led20, OUTPUT);
-  cs_20_25.set_CS_AutocaL_Millis(0xFFFFFFFF); //Calibrate the sensors...
-  cs_20_24.set_CS_AutocaL_Millis(0xFFFFFFFF);
-  cs_20_23.set_CS_AutocaL_Millis(0xFFFFFFFF);
-  cs_20_22.set_CS_AutocaL_Millis(0xFFFFFFFF);
-  cs_20_22.set_CS_AutocaL_Millis(0xFFFFFFFF);
-  cs_20_21.set_CS_AutocaL_Millis(0xFFFFFFFF);
-  cs_20_19.set_CS_AutocaL_Millis(0xFFFFFFFF);
-  cs_20_18.set_CS_AutocaL_Millis(0xFFFFFFFF);
-  cs_20_17.set_CS_AutocaL_Millis(0xFFFFFFFF);
-  cs_20_16.set_CS_AutocaL_Millis(0xFFFFFFFF);
-  cs_20_15.set_CS_AutocaL_Millis(0xFFFFFFFF);
-  cs_20_14.set_CS_AutocaL_Millis(0xFFFFFFFF);
-  cs_20_13.set_CS_AutocaL_Millis(0xFFFFFFFF);  
-  cs_20_12.set_CS_AutocaL_Millis(0xFFFFFFFF);
-  cs_20_11.set_CS_AutocaL_Millis(0xFFFFFFFF);
-  cs_20_10.set_CS_AutocaL_Millis(0xFFFFFFFF);
-  cs_20_09.set_CS_AutocaL_Millis(0xFFFFFFFF);
-  cs_20_08.set_CS_AutocaL_Millis(0xFFFFFFFF);
-  cs_20_07.set_CS_AutocaL_Millis(0xFFFFFFFF);
-  cs_20_06.set_CS_AutocaL_Millis(0xFFFFFFFF);
-  cs_20_05.set_CS_AutocaL_Millis(0xFFFFFFFF);
+  //Sensors
+  cs20.set_CS_AutocaL_Millis(0xFFFFFFFF); //Calibrate the sensors...
+  cs19.set_CS_AutocaL_Millis(0xFFFFFFFF);
+  cs18.set_CS_AutocaL_Millis(0xFFFFFFFF);
+  cs17.set_CS_AutocaL_Millis(0xFFFFFFFF);
+  cs16.set_CS_AutocaL_Millis(0xFFFFFFFF);
+  cs15.set_CS_AutocaL_Millis(0xFFFFFFFF);
+  cs14.set_CS_AutocaL_Millis(0xFFFFFFFF);
+  cs13.set_CS_AutocaL_Millis(0xFFFFFFFF);
+  cs12.set_CS_AutocaL_Millis(0xFFFFFFFF);
+  cs11.set_CS_AutocaL_Millis(0xFFFFFFFF);
+  cs10.set_CS_AutocaL_Millis(0xFFFFFFFF);
+  cs9.set_CS_AutocaL_Millis(0xFFFFFFFF);  
+  cs8.set_CS_AutocaL_Millis(0xFFFFFFFF);
+  cs7.set_CS_AutocaL_Millis(0xFFFFFFFF);
+  cs6.set_CS_AutocaL_Millis(0xFFFFFFFF);
+  cs5.set_CS_AutocaL_Millis(0xFFFFFFFF);
+  cs4.set_CS_AutocaL_Millis(0xFFFFFFFF);
+  cs3.set_CS_AutocaL_Millis(0xFFFFFFFF);
+  cs2.set_CS_AutocaL_Millis(0xFFFFFFFF);
+  cs1.set_CS_AutocaL_Millis(0xFFFFFFFF);
   Serial.begin(9600);
+  //Midi
   mySerial.begin(31250); //Set up soft serial for music instrument sheild.
   //Reset the VS1053
   pinMode(resetMIDI, OUTPUT);
@@ -149,65 +155,14 @@ void setup() {
 }
 
 void loop() {
-//  playBeat(&count1, &count2, &count3, &count4, &count5);
   playBeatOne();
+  pollForPresses();
+  playBeatTwo();
   pollForPresses();
   playBeatThree();
   pollForPresses();
-
-//  playBeat(&count6, &count7, &count8, &count9, &count10);
-//  if (count6 == 0) {
-//    digitalWrite(led6, LOW);
-//  }
-//  if (count7 == 0) {
-//    digitalWrite(led7, LOW);
-//  }
-//  if (count8 == 0) {
-//    digitalWrite(led8, LOW);
-//  }
-//  if (count9 == 0) {
-//    digitalWrite(led9, LOW);
-//  }
-//  if (count10 == 0) {
-//    digitalWrite(led10, LOW);
-//  }
-//  pollForPresses();
-//
-//  playBeat(&count11, &count12, &count13, &count14, &count15);
-//  if (count11 == 0) {
-//    digitalWrite(led11, LOW);
-//  }
-//  if (count12 == 0) {
-//    digitalWrite(led12, LOW);
-//  }
-//  if (count13 == 0) {
-//    digitalWrite(led13, LOW);
-//  }
-//  if (count14 == 0) {
-//    digitalWrite(led14, LOW);
-//  }
-//  if (count15 == 0) {
-//    digitalWrite(led15, LOW);
-//  }
-//  pollForPresses();
-//
-//  playBeat(&count16, &count17, &count18, &count19, &count20);
-//  if (count16 == 0) {
-//    digitalWrite(led16, LOW);
-//  }
-//  if (count17 == 0) {
-//    digitalWrite(led17, LOW);
-//  }
-//  if (count18 == 0) {
-//    digitalWrite(led18, LOW);
-//  }
-//  if (count19 == 0) {
-//    digitalWrite(led19, LOW);
-//  }
-//  if (count20 == 0) {
-//    digitalWrite(led20, LOW);
-//  }
-//  pollForPresses();
+  playBeatFour();
+  pollForPresses();
 }
 
 void pollForPresses() {
@@ -217,157 +172,66 @@ void pollForPresses() {
   }
 }
 
-void checkPins() {  
-  cap1 = cs_20_13.capacitiveSensor(10);
-  cap2 = cs_20_12.capacitiveSensor(10);
-  cap3 = cs_20_11.capacitiveSensor(10);
-  cap4 = cs_20_10.capacitiveSensor(10);
-  cap5 = cs_20_09.capacitiveSensor(10);
-//  cap11 = cs_20_08.capacitiveSensor(10);
-//  cap12 = cs_20_07.capacitiveSensor(10);
-//  cap13 = cs_20_06.capacitiveSensor(10);
-//  cap14 = cs_20_05.capacitiveSensor(10);
-//  cap15 = cs_20_14.capacitiveSensor(10);  
-  cap11 = 600;
-  cap12 = 0;
-  cap13 = 0;
-  cap14 = 750;
-  cap15 = 17;
-//  printCaps();
-  
-
-  if (cap1 >= threshold) {
-    if (count1 == 0) {
-      digitalWrite(led1, HIGH);
-    }
-    count1 = duration;
-  }
-
-  if (cap2 >= threshold) {
-    if (count2 == 0) {
-      digitalWrite(led2, HIGH);
-    }
-    count2 = duration;
-  }
-
-  if (cap3 >= threshold) {
-    if (count3 == 0) {
-      digitalWrite(led3, HIGH);
-    }
-    count3 = duration;
-  }
-
-  if (cap4 >= threshold) {
-    if (count4 == 0) {
-      digitalWrite(led4, HIGH);
-    }
-    count4 = duration;
-  }
-
-  if (cap5 >= threshold) {
-    if (count5 == 0) {
-      digitalWrite(led5, HIGH);
-    }
-    count5 = duration;
-  }
-
-  if (cap11 >= threshold) {
-    if (count11 == 0) {
-      digitalWrite(led11, HIGH);
-    }
-    count11 = duration;
-  }
-
-  if (cap12 >= threshold) {
-    if (count12 == 0) {
-      digitalWrite(led12, HIGH);
-    }
-    count12 = duration;
-  }
-
-  if (cap13 >= threshold) {
-    if (count13 == 0) {
-      digitalWrite(led13, HIGH);
-    }
-    count13 = duration;
-  }
-
-  if (cap14 >= threshold) {
-    if (count14 == 0) {
-      digitalWrite(led14, HIGH);
-    }
-    count14 = duration;
-  }
-
-  if (cap15 >= threshold) {
-    if (count15 == 0) {
-      digitalWrite(led15, HIGH);
-    }
-    count10 = duration;
-  }
-  
-}
-
-void playBeat(int* countC, int* countD, int* countF, int* countG, int* countA) {
-  Serial.println(*countC);
-  Serial.println(*countD);
-  Serial.println(*countF);
-  Serial.println(*countG);
-  Serial.println(*countA);
-  Serial.println();
-
-  if (countC > 0) {
-    noteOn(0, 48, 60);
-  }
-  if (countD > 0) {
-    noteOn(0, 50, 60);  
-  }
-  if (countF > 0) {
-    noteOn(0, 53, 60);  
-  }
-  if (countG > 0) {
-    noteOn(0, 55, 60);  
-  }
-  if (countA > 0) {
-    noteOn(0, 57, 60);   
-  }
-  delay(50);
-  if (countC > 0) {
-    noteOff(0, 48, 60);
-    countC--;
-  }
-  if (countD > 0) {
-    noteOff(0, 50, 60);  
-    countD--;  
-  }
-  if (countF > 0) {
-    noteOff(0, 53, 60);  
-    countF--;  
-  }
-  if (countG > 0) {
-    noteOff(0, 55, 60);  
-    countG--;  
-  }
-  if (countA > 0) {
-    noteOff(0, 57, 60);   
-    countA--; 
-  }
+void checkPins() {
+  //Beat 1 
+//  count1 = 600;
+  count1 = (cs1.capacitiveSensor(1) >= threshold) ? duration : count1;
+  count2 = (cs2.capacitiveSensor(1) >= threshold) ? duration : count2;
+  count3 = (cs3.capacitiveSensor(1) >= threshold) ? duration : count3;
+  count4 = (cs4.capacitiveSensor(1) >= threshold) ? duration : count4;
+  count5 = (cs5.capacitiveSensor(1) >= threshold) ? duration : count5;
+  //Beat 2
+  count6 = (cs6.capacitiveSensor(1) >= threshold) ? duration : count6;
+//  count7 = 600;
+  count7 = (cs7.capacitiveSensor(1) >= threshold) ? duration : count7;
+  count8 = (cs8.capacitiveSensor(1) >= threshold) ? duration : count8;
+  count9 = (cs9.capacitiveSensor(1) >= threshold) ? duration : count9;
+  count10 = (cs10.capacitiveSensor(1) >= threshold) ? duration : count10;
+  //Beat 3
+  count11 = (cs11.capacitiveSensor(1) >= threshold) ? duration : count11;
+  count12 = (cs12.capacitiveSensor(1) >= threshold) ? duration : count12;
+//  count13 = 600;
+  count13 = (cs13.capacitiveSensor(1) >= threshold) ? duration : count13;
+  count14 = (cs14.capacitiveSensor(1) >= threshold) ? duration : count14;
+  count15 = (cs15.capacitiveSensor(1) >= threshold) ? duration : count15;
+  Beat 4
+  count16 = (cs16.capacitiveSensor(1) >= threshold) ? duration : count16;
+  count17 = (cs17.capacitiveSensor(1) >= threshold) ? duration : count17;
+  count18 = (cs18.capacitiveSensor(1) >= threshold) ? duration : count18;
+//  count19 = 600;
+  count19 = (cs19.capacitiveSensor(1) >= threshold) ? duration : count19;
+  count20 = (cs20.capacitiveSensor(1) >= threshold) ? duration : count20;    
 }
 
 void playBeatOne() {
   if (count1 > 0) {
+    if (count1 == 0) {
+      digitalWrite(led1, HIGH);
+    }
     noteOn(0, 48, 60);
   }
   if (count2 > 0) {
+    if (count2 == 0) {
+      digitalWrite(led1, HIGH);
+    }
     noteOn(0, 50, 60);  
   }
   if (count3 > 0) {
+    if (count3 == 0) {
+      digitalWrite(led1, HIGH);
+    }
     noteOn(0, 53, 60);  
   }
   if (count4 > 0) {
+    if (count4 == 0) {
+      digitalWrite(led1, HIGH);
+    }
     noteOn(0, 55, 60);  
   }
   if (count5 > 0) {
+    if (count5 == 0) {
+      digitalWrite(led1, HIGH);
+    }
     noteOn(0, 57, 60);   
   }
   delay(50);
@@ -405,6 +269,60 @@ void playBeatOne() {
     }
     noteOff(0, 57, 60);   
     count5--; 
+  }
+}
+
+void playBeatTwo() {
+  if (count6 > 0) {
+    noteOn(0, 48, 60);
+  }
+  if (count7 > 0) {
+    noteOn(0, 50, 60);  
+  }
+  if (count8 > 0) {
+    noteOn(0, 53, 60);  
+  }
+  if (count9 > 0) {
+    noteOn(0, 55, 60);  
+  }
+  if (count10 > 0) {
+    noteOn(0, 57, 60);   
+  }
+  delay(50);
+  if (count6 > 0) {
+    if (count6 == 0) {
+      digitalWrite(led6, LOW);
+    }
+    noteOff(0, 48, 60);
+    count6--;
+  }
+  if (count7 > 0) {
+    if (count7 == 0) {
+      digitalWrite(led7, LOW);
+    }
+    noteOff(0, 50, 60);  
+    count7--;  
+  }
+  if (count8 > 0) {
+    if (count8 == 0) {
+      digitalWrite(led8, LOW);
+    }
+    noteOff(0, 53, 60);  
+    count8--;  
+  }
+  if (count9 > 0) {
+    if (count9 == 0) {
+      digitalWrite(led9, LOW);
+    }
+    noteOff(0, 55, 60);  
+    count9--;  
+  }
+  if (count10 > 0) {
+    if (count10 == 0) {
+      digitalWrite(led10, LOW);
+    }
+    noteOff(0, 57, 60);   
+    count10--; 
   }
 }
 
@@ -462,47 +380,58 @@ void playBeatThree() {
   }
 }
 
-void printCaps() {
-  Serial.print(cap1);
-  Serial.print("\t");
-  Serial.print(cap2);
-  Serial.print("\t");
-  Serial.print(cap3);
-  Serial.print("\t");
-  Serial.print(cap4);
-  Serial.print("\t");
-  Serial.print(cap5);
-  Serial.print("\t");
-  Serial.print(cap6);
-  Serial.print("\t");
-  Serial.print(cap7);
-  Serial.print("\t");
-  Serial.print(cap8);
-  Serial.print("\t");
-  Serial.print(cap9);
-  Serial.print("\t");
-  Serial.print(cap10);
-  Serial.print("\t");
-  Serial.print(cap11);
-  Serial.print("\t");
-  Serial.print(cap12);
-  Serial.print("\t");
-  Serial.print(cap13);
-  Serial.print("\t");
-  Serial.print(cap14);
-  Serial.print("\t");
-  Serial.print(cap15);
-  Serial.print("\t");
-  Serial.print(cap16);
-  Serial.print("\t");
-  Serial.print(cap17);
-  Serial.print("\t");
-  Serial.print(cap18);
-  Serial.print("\t");
-  Serial.print(cap19);
-  Serial.print("\t");
-  Serial.print(cap20);
-  Serial.println();
+void playBeatFour() {
+  if (count16 > 0) {
+    noteOn(0, 48, 60);
+  }
+  if (count17 > 0) {
+    noteOn(0, 50, 60);  
+  }
+  if (count18 > 0) {
+    noteOn(0, 53, 60);  
+  }
+  if (count19 > 0) {
+    noteOn(0, 55, 60);  
+  }
+  if (count20 > 0) {
+    noteOn(0, 57, 60);   
+  }
+  delay(50);
+  if (count16 > 0) {
+    if (count16 == 0) {
+      digitalWrite(led16, LOW);
+    }
+    noteOff(0, 48, 60);
+    count16--;
+  }
+  if (count17 > 0) {
+    if (count17 == 0) {
+      digitalWrite(led17, LOW);
+    }
+    noteOff(0, 50, 60);  
+    count17--;  
+  }
+  if (count18 > 0) {
+    if (count18 == 0) {
+      digitalWrite(led18, LOW);
+    }
+    noteOff(0, 53, 60);  
+    count18--;  
+  }
+  if (count19 > 0) {
+    if (count19 == 0) {
+      digitalWrite(led19, LOW);
+    }
+    noteOff(0, 55, 60);  
+    count19--;  
+  }
+  if (count20 > 0) {
+    if (count20 == 0) {
+      digitalWrite(led20, LOW);
+    }
+    noteOff(0, 57, 60);   
+    count20--; 
+  }
 }
 
 /*MIDI BUSINESS*/
