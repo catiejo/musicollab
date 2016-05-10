@@ -90,8 +90,8 @@ int count20 = 0;
 
 int beat = 100;
 int granularity = 5;
-int duration = 2;
-long threshold = 300;
+int duration = 20;
+long threshold = 500;
 
 void setup() {
   pinMode(led1, OUTPUT);
@@ -114,7 +114,7 @@ void setup() {
   pinMode(led18, OUTPUT);
   pinMode(led19, OUTPUT);
   pinMode(led20, OUTPUT);
-  cs_20_25.set_CS_AutocaL_Millis(0xFFFFFFFF);
+  cs_20_25.set_CS_AutocaL_Millis(0xFFFFFFFF); //Calibrate the sensors...
   cs_20_24.set_CS_AutocaL_Millis(0xFFFFFFFF);
   cs_20_23.set_CS_AutocaL_Millis(0xFFFFFFFF);
   cs_20_22.set_CS_AutocaL_Millis(0xFFFFFFFF);
@@ -126,7 +126,7 @@ void setup() {
   cs_20_16.set_CS_AutocaL_Millis(0xFFFFFFFF);
   cs_20_15.set_CS_AutocaL_Millis(0xFFFFFFFF);
   cs_20_14.set_CS_AutocaL_Millis(0xFFFFFFFF);
-  cs_20_13.set_CS_AutocaL_Millis(0xFFFFFFFF);  //Calibrate the sensors...
+  cs_20_13.set_CS_AutocaL_Millis(0xFFFFFFFF);  
   cs_20_12.set_CS_AutocaL_Millis(0xFFFFFFFF);
   cs_20_11.set_CS_AutocaL_Millis(0xFFFFFFFF);
   cs_20_10.set_CS_AutocaL_Millis(0xFFFFFFFF);
@@ -149,77 +149,65 @@ void setup() {
 }
 
 void loop() {
-  playBeat(&count1, &count2, &count3, &count4, &count5);
-  if (count1 == 0) {
-    digitalWrite(led1, LOW);
-  }
-  if (count2 == 0) {
-    digitalWrite(led2, LOW);
-  }
-  if (count3 == 0) {
-    digitalWrite(led3, LOW);
-  }
-  if (count4 == 0) {
-    digitalWrite(led4, LOW);
-  }
-  if (count5 == 0) {
-    digitalWrite(led5, LOW);
-  }
+//  playBeat(&count1, &count2, &count3, &count4, &count5);
+  playBeatOne();
+  pollForPresses();
+  playBeatThree();
   pollForPresses();
 
-  playBeat(&count6, &count7, &count8, &count9, &count10);
-  if (count6 == 0) {
-    digitalWrite(led6, LOW);
-  }
-  if (count7 == 0) {
-    digitalWrite(led7, LOW);
-  }
-  if (count8 == 0) {
-    digitalWrite(led8, LOW);
-  }
-  if (count9 == 0) {
-    digitalWrite(led9, LOW);
-  }
-  if (count10 == 0) {
-    digitalWrite(led10, LOW);
-  }
-  pollForPresses();
-
-  playBeat(&count11, &count12, &count13, &count14, &count15);
-  if (count11 == 0) {
-    digitalWrite(led11, LOW);
-  }
-  if (count12 == 0) {
-    digitalWrite(led12, LOW);
-  }
-  if (count13 == 0) {
-    digitalWrite(led13, LOW);
-  }
-  if (count14 == 0) {
-    digitalWrite(led14, LOW);
-  }
-  if (count15 == 0) {
-    digitalWrite(led15, LOW);
-  }
-  pollForPresses();
-
-  playBeat(&count16, &count17, &count18, &count19, &count20);
-  if (count16 == 0) {
-    digitalWrite(led16, LOW);
-  }
-  if (count17 == 0) {
-    digitalWrite(led17, LOW);
-  }
-  if (count18 == 0) {
-    digitalWrite(led18, LOW);
-  }
-  if (count19 == 0) {
-    digitalWrite(led19, LOW);
-  }
-  if (count20 == 0) {
-    digitalWrite(led20, LOW);
-  }
-  pollForPresses();
+//  playBeat(&count6, &count7, &count8, &count9, &count10);
+//  if (count6 == 0) {
+//    digitalWrite(led6, LOW);
+//  }
+//  if (count7 == 0) {
+//    digitalWrite(led7, LOW);
+//  }
+//  if (count8 == 0) {
+//    digitalWrite(led8, LOW);
+//  }
+//  if (count9 == 0) {
+//    digitalWrite(led9, LOW);
+//  }
+//  if (count10 == 0) {
+//    digitalWrite(led10, LOW);
+//  }
+//  pollForPresses();
+//
+//  playBeat(&count11, &count12, &count13, &count14, &count15);
+//  if (count11 == 0) {
+//    digitalWrite(led11, LOW);
+//  }
+//  if (count12 == 0) {
+//    digitalWrite(led12, LOW);
+//  }
+//  if (count13 == 0) {
+//    digitalWrite(led13, LOW);
+//  }
+//  if (count14 == 0) {
+//    digitalWrite(led14, LOW);
+//  }
+//  if (count15 == 0) {
+//    digitalWrite(led15, LOW);
+//  }
+//  pollForPresses();
+//
+//  playBeat(&count16, &count17, &count18, &count19, &count20);
+//  if (count16 == 0) {
+//    digitalWrite(led16, LOW);
+//  }
+//  if (count17 == 0) {
+//    digitalWrite(led17, LOW);
+//  }
+//  if (count18 == 0) {
+//    digitalWrite(led18, LOW);
+//  }
+//  if (count19 == 0) {
+//    digitalWrite(led19, LOW);
+//  }
+//  if (count20 == 0) {
+//    digitalWrite(led20, LOW);
+//  }
+//  pollForPresses();
 }
 
 void pollForPresses() {
@@ -235,12 +223,17 @@ void checkPins() {
   cap3 = cs_20_11.capacitiveSensor(10);
   cap4 = cs_20_10.capacitiveSensor(10);
   cap5 = cs_20_09.capacitiveSensor(10);
-  cap6 = cs_20_08.capacitiveSensor(10);
-  cap7 = cs_20_07.capacitiveSensor(10);
-  cap8 = cs_20_06.capacitiveSensor(10);
-  cap9 = cs_20_05.capacitiveSensor(10);
-  cap10 = cs_20_14.capacitiveSensor(10);
-  printCaps();
+//  cap11 = cs_20_08.capacitiveSensor(10);
+//  cap12 = cs_20_07.capacitiveSensor(10);
+//  cap13 = cs_20_06.capacitiveSensor(10);
+//  cap14 = cs_20_05.capacitiveSensor(10);
+//  cap15 = cs_20_14.capacitiveSensor(10);  
+  cap11 = 600;
+  cap12 = 0;
+  cap13 = 0;
+  cap14 = 750;
+  cap15 = 17;
+//  printCaps();
   
 
   if (cap1 >= threshold) {
@@ -278,16 +271,52 @@ void checkPins() {
     count5 = duration;
   }
 
-  if (cap6 >= threshold) {
-    if (count6 == 0) {
-      digitalWrite(led6, HIGH);
+  if (cap11 >= threshold) {
+    if (count11 == 0) {
+      digitalWrite(led11, HIGH);
     }
-    count6 = duration;
+    count11 = duration;
   }
+
+  if (cap12 >= threshold) {
+    if (count12 == 0) {
+      digitalWrite(led12, HIGH);
+    }
+    count12 = duration;
+  }
+
+  if (cap13 >= threshold) {
+    if (count13 == 0) {
+      digitalWrite(led13, HIGH);
+    }
+    count13 = duration;
+  }
+
+  if (cap14 >= threshold) {
+    if (count14 == 0) {
+      digitalWrite(led14, HIGH);
+    }
+    count14 = duration;
+  }
+
+  if (cap15 >= threshold) {
+    if (count15 == 0) {
+      digitalWrite(led15, HIGH);
+    }
+    count10 = duration;
+  }
+  
 }
 
 void playBeat(int* countC, int* countD, int* countF, int* countG, int* countA) {
-  if (countC != 0) {
+  Serial.println(*countC);
+  Serial.println(*countD);
+  Serial.println(*countF);
+  Serial.println(*countG);
+  Serial.println(*countA);
+  Serial.println();
+
+  if (countC > 0) {
     noteOn(0, 48, 60);
   }
   if (countD > 0) {
@@ -322,6 +351,114 @@ void playBeat(int* countC, int* countD, int* countF, int* countG, int* countA) {
   if (countA > 0) {
     noteOff(0, 57, 60);   
     countA--; 
+  }
+}
+
+void playBeatOne() {
+  if (count1 > 0) {
+    noteOn(0, 48, 60);
+  }
+  if (count2 > 0) {
+    noteOn(0, 50, 60);  
+  }
+  if (count3 > 0) {
+    noteOn(0, 53, 60);  
+  }
+  if (count4 > 0) {
+    noteOn(0, 55, 60);  
+  }
+  if (count5 > 0) {
+    noteOn(0, 57, 60);   
+  }
+  delay(50);
+  if (count1 > 0) {
+    if (count1 == 0) {
+      digitalWrite(led1, LOW);
+    }
+    noteOff(0, 48, 60);
+    count1--;
+  }
+  if (count2 > 0) {
+    if (count2 == 0) {
+      digitalWrite(led2, LOW);
+    }
+    noteOff(0, 50, 60);  
+    count2--;  
+  }
+  if (count3 > 0) {
+    if (count3 == 0) {
+      digitalWrite(led3, LOW);
+    }
+    noteOff(0, 53, 60);  
+    count3--;  
+  }
+  if (count4 > 0) {
+    if (count4 == 0) {
+      digitalWrite(led4, LOW);
+    }
+    noteOff(0, 55, 60);  
+    count4--;  
+  }
+  if (count5 > 0) {
+    if (count5 == 0) {
+      digitalWrite(led5, LOW);
+    }
+    noteOff(0, 57, 60);   
+    count5--; 
+  }
+}
+
+void playBeatThree() {
+  if (count11 > 0) {
+    noteOn(0, 48, 60);
+  }
+  if (count12 > 0) {
+    noteOn(0, 50, 60);  
+  }
+  if (count13 > 0) {
+    noteOn(0, 53, 60);  
+  }
+  if (count14 > 0) {
+    noteOn(0, 55, 60);  
+  }
+  if (count15 > 0) {
+    noteOn(0, 57, 60);   
+  }
+  delay(50);
+  if (count11 > 0) {
+    if (count11 == 0) {
+      digitalWrite(led11, LOW);
+    }
+    noteOff(0, 48, 60);
+    count11--;
+  }
+  if (count12 > 0) {
+    if (count12 == 0) {
+      digitalWrite(led12, LOW);
+    }
+    noteOff(0, 50, 60);  
+    count12--;  
+  }
+  if (count13 > 0) {
+    if (count13 == 0) {
+      digitalWrite(led13, LOW);
+    }
+    noteOff(0, 53, 60);  
+    count13--;  
+  }
+  if (count14 > 0) {
+    if (count14 == 0) {
+      digitalWrite(led14, LOW);
+    }
+    noteOff(0, 55, 60);  
+    count14--;  
+  }
+  if (count15 > 0) {
+    if (count15 == 0) {
+      digitalWrite(led15, LOW);
+    }
+    noteOff(0, 57, 60);   
+    count15--; 
   }
 }
 
