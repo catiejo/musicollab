@@ -1,125 +1,88 @@
+#include <CapacitiveSensor.h>
+
 int led1 = 13;
 int led2 = 12;
 int led3 = 11;
-int led4 = 10;
 
-int button1 = 53;
-int button2 = 52;
-int button3 = 51;
-int button4 = 50;
+CapacitiveSensor cs24 = CapacitiveSensor(2,4);
+CapacitiveSensor cs26 = CapacitiveSensor(2,6);
+CapacitiveSensor cs28 = CapacitiveSensor(2,8);
+
+long cap1 = 0;
+long cap2 = 0;
+long cap3 = 0;
 
 int count1 = 0;
 int count2 = 0;
 int count3 = 0;
-int count4 = 0;
 
-int duration = 1;
 int beat = 500;
 int granularity = 10;
-
-bool debug = false;
+int duration = 2;
+long threshold = 300;
 
 void setup() {
-  Serial.begin(9600);
   pinMode(led1, OUTPUT);
   pinMode(led2, OUTPUT);
   pinMode(led3, OUTPUT);
-  pinMode(led4, OUTPUT);
-
-  pinMode(button1, INPUT);
-  pinMode(button2, INPUT);
-  pinMode(button3, INPUT);
-  pinMode(button4, INPUT);
-
-  digitalWrite(button1, LOW);
-  digitalWrite(button2, LOW);
-  digitalWrite(button3, LOW);
-  digitalWrite(button4, LOW);
+  cs24.set_CS_AutocaL_Millis(0xFFFFFFFF);  //Calibrate the sensor... 
+  cs26.set_CS_AutocaL_Millis(0xFFFFFFFF);  //Calibrate the sensor... 
+  cs28.set_CS_AutocaL_Millis(0xFFFFFFFF);  //Calibrate the sensor... 
+  Serial.begin(9600);
 }
 
 void loop() {
-  if (debug == true) {
-    debugPins(2);
-  } else {
-    debugPins(1);
-  }
-  debug = !debug;
-  Serial.print("count is: ");
-  Serial.print(count1);
-  Serial.print("\n");
   if (count1 != 0) {
     digitalWrite(led1, HIGH);
-    Serial.print("LED should be on");
     count1--;
   }
-  delay(beat);
-//  pollForPresses();
+  pollForPresses();
   digitalWrite(led1, LOW);
-  Serial.print("LED should be off");
   if (count2 != 0) {
     digitalWrite(led2, HIGH);
     count2--;
   }
-//  pollForPresses();
+  pollForPresses();
   digitalWrite(led2, LOW);
   if (count3 != 0) {
     digitalWrite(led3, HIGH);
     count3--;
   }
-//  pollForPresses();
+  pollForPresses();
   digitalWrite(led3, LOW);
-  if (count4 != 0) {
-    digitalWrite(led4, HIGH);
-    count4--;
-  }
-//  pollForPresses();
-  digitalWrite(led4, LOW);
 }
 
 void pollForPresses() {
-  for (int i=0; i < granularity; i++) {
+  for (int i = 0; i < granularity; i++) {
     delay(beat/granularity);
     checkPins();
   }
 }
 
 void checkPins() {
-  if (digitalRead(button1) == HIGH) {
-    Serial.print("button 1 is pressed\n");
+  cap1 = cs24.capacitiveSensor(10);
+//  Serial.println(cap1);
+  cap2 = cs26.capacitiveSensor(10);
+  Serial.println(cap2);
+  cap3 = cs28.capacitiveSensor(10);
+//  Serial.println(cap3);
+  if (cap1 >= threshold) {
+    if (count1 == 0) {
+      digitalWrite(led1, HIGH);
+    }
     count1 = duration;
-  } else {
-    Serial.print("button 1 is NOT pressed\n");
   }
-  if (digitalRead(button2) == HIGH) {
-//    Serial.print("button 2 is pressed\n");
+  if (cap2 >= threshold) {
+    if (count2 == 0) {
+      digitalWrite(led2, HIGH);
+    }
     count2 = duration;
-  }
-  if (digitalRead(button3) == HIGH) {
-//    Serial.print("button 3 is pressed\n");
+  }  
+  if (cap3 >= threshold) {
+    if (count3 == 0) {
+      digitalWrite(led3, HIGH);
+    }
     count3 = duration;
   }
-  if (digitalRead(button4) == HIGH) {
-//    Serial.print("button 4 is pressed\n");
-    count4 = duration;
-  }
-}
-
-void debugPins(int seq) {
-  if (seq == 0) {
-    //do nothing
-  } else if (seq == 1) {
-    digitalWrite(button1, HIGH);
-    digitalWrite(button2, HIGH);
-    digitalWrite(button3, HIGH);
-    digitalWrite(button4, HIGH);
-    checkPins();
-  } else if (seq == 2) {
-    digitalWrite(button1, LOW);
-    digitalWrite(button2, LOW);
-    digitalWrite(button3, LOW);
-    digitalWrite(button4, LOW);
-    checkPins();
-  }
-  delay(beat);
 }
 
