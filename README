@@ -1,7 +1,8 @@
 Written by Catie Jo Pidel
 --------------------------------------------------------------------------------
+This code was written to accompany the MusiCollab music-making picture frame. The code runs on an Arduino Mega 2560 with a MIDI shield using the CapSense library. For more information on this project, visit www.coroflot.com/catiejo/MusiCollab/.
 
 Directions:
-* Load code onto board, then press RESET once
-* Press Button
-* Be amazed (if you're easily amazed)
+* Load code onto board using Arduino IDE
+* Press buttons
+* Be amazed (if you just really like sound and flashing lights)
