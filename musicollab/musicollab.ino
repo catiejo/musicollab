@@ -77,8 +77,8 @@ int count20 = 0;
 
 int beat = 100; //tempo
 int granularity = 10; //how often the beat length is interrupted to check sensors
-int duration = 4; //number of times a note repeats
-long threshold = 450; //sensor threshold for indicating a touch
+int duration = 8; //number of times a note repeats
+long threshold = 420; //sensor threshold for indicating a touch
 
 void setup() {
   //LEDs
@@ -156,51 +156,51 @@ void pollForPresses() {
 }
 
 void printCaps() {
-  Serial.print(cs1C.capacitiveSensor(1));
-  Serial.print("\t");
-  Serial.print(cs1D.capacitiveSensor(1));
-  Serial.print("\t");
-  Serial.print(cs1F.capacitiveSensor(1));
-  Serial.print("\t");
-  Serial.print(cs1G.capacitiveSensor(1));
-  Serial.print("\t");
-  Serial.print(cs1A.capacitiveSensor(1));
-  Serial.print("\t");
-  Serial.print(cs2C.capacitiveSensor(1));
-  Serial.print("\t");
-  Serial.print(cs2D.capacitiveSensor(1));
-  Serial.print("\t");
-  Serial.print(cs2F.capacitiveSensor(1));
-  Serial.print("\t");
-  Serial.print(cs2G.capacitiveSensor(1));
-  Serial.print("\t");
-  Serial.print(cs2A.capacitiveSensor(1));
-  Serial.print("\t");
-  Serial.print(cs3C.capacitiveSensor(1));
-  Serial.print("\t");
-  Serial.print(cs3D.capacitiveSensor(1));
-  Serial.print("\t");
-  Serial.print(cs3F.capacitiveSensor(1));
-  Serial.print("\t");
-  Serial.print(cs3G.capacitiveSensor(1));
-  Serial.print("\t");
-  Serial.print(cs3A.capacitiveSensor(1));
-  Serial.print("\t");
+//  Serial.print(cs1C.capacitiveSensor(1));
+//  Serial.print("\t");
+//  Serial.print(cs1D.capacitiveSensor(1));
+//  Serial.print("\t");
+//  Serial.print(cs1F.capacitiveSensor(1));
+//  Serial.print("\t");
+//  Serial.print(cs1G.capacitiveSensor(1));
+//  Serial.print("\t");
+//  Serial.print(cs1A.capacitiveSensor(1));
+//  Serial.print("\t");
+//  Serial.print(cs2C.capacitiveSensor(1));
+//  Serial.print("\t");
+//  Serial.print(cs2D.capacitiveSensor(1));
+//  Serial.print("\t");
+//  Serial.print(cs2F.capacitiveSensor(1));
+//  Serial.print("\t");
+//  Serial.print(cs2G.capacitiveSensor(1));
+//  Serial.print("\t");
+//  Serial.print(cs2A.capacitiveSensor(1));
+//  Serial.print("\t");
+//  Serial.print(cs3C.capacitiveSensor(1));
+//  Serial.print("\t");
+//  Serial.print(cs3D.capacitiveSensor(1));
+//  Serial.print("\t");
+//  Serial.print(cs3F.capacitiveSensor(1));
+//  Serial.print("\t");
+//  Serial.print(cs3G.capacitiveSensor(1));
+//  Serial.print("\t");
+//  Serial.print(cs3A.capacitiveSensor(1));
+//  Serial.print("\t");
   Serial.print(cs4C.capacitiveSensor(1));
   Serial.print("\t");
   Serial.print(cs4D.capacitiveSensor(1));
-  Serial.print("\t");
-  Serial.print(cs4F.capacitiveSensor(1));
-  Serial.print("\t");
-  Serial.print(cs4G.capacitiveSensor(1));
-  Serial.print("\t");
-  Serial.print(cs4A.capacitiveSensor(1));
+//  Serial.print("\t");
+//  Serial.print(cs4F.capacitiveSensor(1));
+//  Serial.print("\t");
+//  Serial.print(cs4G.capacitiveSensor(1));
+//  Serial.print("\t");
+//  Serial.print(cs4A.capacitiveSensor(1));
   Serial.println();
-  delay(10); //slow so the screen doesn't go by too fast.
+//  delay(5); //slow so the screen doesn't go by too fast.
 }
 
 void checkPins() {
-//  printCaps(); //DEBUGGING
+  printCaps(); //DEBUGGING
   //Beat 1
   count1 = (cs1C.capacitiveSensor(1) >= threshold) ? duration : count1;
   count2 = (cs1D.capacitiveSensor(1) >= threshold) ? duration : count2; //loose solder pin 6
